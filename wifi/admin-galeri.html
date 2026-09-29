@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Galeri - PT. CANTIKA DATA PRIMA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1a3d6b 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .admin-logo {
+            padding: 0 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .admin-logo h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .admin-logo span {
+            color: #4dabf7;
+        }
+
+        .admin-menu ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .admin-menu li {
+            margin-bottom: 5px;
+        }
+
+        .admin-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            gap: 12px;
+        }
+
+        .admin-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .admin-menu a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-left: 4px solid #4dabf7;
+        }
+
+        .admin-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-logout {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-logout a {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            gap: 12px;
+        }
+
+        .admin-logout a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content-wrapper {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        /* Header */
+        .content-header {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-header h1 {
+            color: #2c5aa0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .stat-icon.total {
+            background-color: #e3eeff;
+            color: #2c5aa0;
+        }
+
+        .stat-icon.instalasi {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .stat-icon.tim {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .data-table th {
+            background-color: #f8fafc;
+            color: #2c5aa0;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e1e8f0;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e1e8f0;
+            vertical-align: top;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .gallery-preview {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e1e8f0;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .category-badge.instalasi { background-color: #e3eeff; color: #2c5aa0; }
+        .category-badge.kegiatan { background-color: #e8f5e9; color: #388e3c; }
+        .category-badge.teknologi { background-color: #fff3e0; color: #f57c00; }
+        .category-badge.tim { background-color: #f3e5f5; color: #7b1fa2; }
+        .category-badge.pelanggan { background-color: #e8eaf6; color: #303f9f; }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #e3eeff;
+            color: #2c5aa0;
+        }
+
+        .btn-edit:hover {
+            background-color: #2c5aa0;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            background-color: #2c5aa0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1a3d6b;
+            transform: translateY(-2px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 20px 30px;
+            background-color: #2c5aa0;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-cancel {
+            background-color: #f5f5f5;
+            color: #666;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Image Upload */
+        .image-upload-container {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .image-upload-container:hover {
+            border-color: #2c5aa0;
+            background-color: #f0f7ff;
+        }
+
+        .image-upload-container.drag-over {
+            border-color: #2c5aa0;
+            background-color: #e3eeff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #2c5aa0;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .upload-note {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .image-preview-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 2px solid #e1e8f0;
+            display: none;
+        }
+
+        /* Alert */
+        #alertContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .alert-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .alert-warning {
+            background-color: #fff3e0;
+            color: #f57c00;
+            border-left: 4px solid #ff9800;
+        }
+
+        /* Search and Filter */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 300px;
+            font-size: 0.9rem;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 0.9rem;
+        }
+
+        /* Auto-save indicator */
+        .auto-save-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+            z-index: 1000;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .admin-sidebar {
+                width: 70px;
+            }
+            
+            .admin-sidebar span {
+                display: none;
+            }
+            
+            .main-content-wrapper {
+                margin-left: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <i class="fas fa-images logo-icon"></i>
+            <h2>Galeri<span>Admin</span></h2>
+        </div>
+        
+        <div class="admin-menu">
+            <ul>
+                <li><a href="admin-dashboard.html" ><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li><a href="admin_paket.php"><i class="fas fa-users"></i> <span>Layanan</span></a></li>
+                <li><a href="admin-galeri.html" class="active"><i class="fas fa-exclamation-triangle"></i> <span>Galeri Perusahaan</span></a></li>
+                <li><a href="admin-tim.html"><i class="fas fa-file-invoice-dollar"></i> <span>Galeri Tim</span></a></li>
+                <li><a href="admin_kontak_info.php"><i class="fas fa-network-wired"></i> <span>Kontak</span></a></li>
+            </ul>
+        </div>
+        
+        <div class="admin-logout">
+            <a href="index.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content-wrapper">
+        <div class="content-header">
+            <h1><i class="fas fa-images"></i> Kelola Galeri Perusahaan</h1>
+            <button class="btn-primary" id="addGalleryBtn">
+                <i class="fas fa-plus"></i> Tambah Galeri Baru
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-images"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalGallery">0</h3>
+                    <p>Total Galeri</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon instalasi">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalInstalasi">0</h3>
+                    <p>Instalasi Jaringan</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon tim">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalTim">0</h3>
+                    <p>Galeri Tim</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div id="alertContainer"></div>
+
+        <!-- Auto-save Indicator -->
+        <div class="auto-save-indicator" id="autoSaveIndicator">
+            <i class="fas fa-check"></i>
+            <span>Data tersimpan otomatis</span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-controls">
+                <input type="text" class="search-box" id="searchInput" placeholder="Cari galeri...">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">Semua Kategori</option>
+                    <option value="instalasi">Instalasi Jaringan</option>
+                    <option value="kegiatan">Kegiatan Perusahaan</option>
+                    <option value="teknologi">Perangkat Teknologi</option>
+                    <option value="tim">Tim Kami</option>
+                    <option value="pelanggan">Kepuasan Pelanggan</option>
+                </select>
+            </div>
+            
+            <table class="data-table" id="galleryTable">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Deskripsi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="galleryTableBody">
+                    <!-- Data akan diisi otomatis -->
+                </tbody>
+            </table>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-images"></i>
+                <h3>Belum ada gambar di galeri</h3>
+                <p>Silahkan tambahkan gambar dengan mengklik tombol "Tambah Galeri Baru"</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="galleryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Tambah Galeri Baru</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="galleryForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="galleryTitle">Judul Galeri *</label>
+                            <input type="text" id="galleryTitle" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="galleryCategory">Kategori *</label>
+                            <select id="galleryCategory" class="form-control" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="instalasi">Instalasi Jaringan</option>
+                                <option value="kegiatan">Kegiatan Perusahaan</option>
+                                <option value="teknologi">Perangkat Teknologi</option>
+                                <option value="tim">Tim Kami</option>
+                                <option value="pelanggan">Kepuasan Pelanggan</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="galleryDescription">Deskripsi *</label>
+                        <textarea id="galleryDescription" class="form-control" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload Gambar *</label>
+                        <div class="image-upload-container" id="imageUploadContainer">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <div class="upload-text">Klik untuk upload gambar atau drag & drop</div>
+                            <div class="upload-note">Format: JPG, PNG, GIF (Maks: 2MB)</div>
+                            <input type="file" id="galleryImageFile" class="form-control" accept="image/*" style="display: none;" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="image-preview-container">
+                            <img id="imagePreview" class="image-preview" alt="Preview Gambar">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelBtn">Batal</button>
+                        <button type="submit" class="btn-primary" id="saveBtn">Simpan Galeri</button>
+                    </div>
+                    
+                    <input type="hidden" id="galleryId">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header" style="background-color: #d32f2f;">
+                <h2>Konfirmasi Hapus</h2>
+                <button class="modal-close" id="deleteModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">Apakah Anda yakin ingin menghapus galeri <strong id="deleteGalleryTitle"></strong>?</p>
+                <p style="color: #666; margin-bottom: 30px;">Tindakan ini tidak dapat dibatalkan.</p>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelDeleteBtn">Batal</button>
+                    <button type="button" class="btn-primary" id="confirmDeleteBtn" style="background-color: #d32f2f;">Ya, Hapus</button>
+                </div>
+                <input type="hidden" id="deleteGalleryId">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // SISTEM DATA GALERI - localStorage DENGAN BASE64
+        // ============================================
+        
+        const GALLERY_STORAGE_KEY = 'cantika_gallery_local_v1';
+        
+        // Data default kosong
+        const defaultGalleryItems = [];
+        
+        // Fungsi untuk menyimpan data
+        function saveGalleryData(galleryItems) {
+            try {
+                const dataToSave = {
+                    items: galleryItems,
+                    lastUpdated: new Date().toISOString(),
+                    version: '1.0'
+                };
+                localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(dataToSave));
+                
+                // Trigger event untuk halaman galeri
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: GALLERY_STORAGE_KEY,
+                    newValue: JSON.stringify(dataToSave)
+                }));
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving gallery data:', error);
+                return false;
+            }
+        }
+        
+        // Fungsi untuk mengambil data
+        function getGalleryData() {
+            try {
+                const storedData = localStorage.getItem(GALLERY_STORAGE_KEY);
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    if (parsed.items && Array.isArray(parsed.items)) {
+                        return parsed.items;
+                    }
+                }
+                saveGalleryData(defaultGalleryItems);
+                return defaultGalleryItems;
+            } catch (error) {
+                console.error('Error loading gallery data:', error);
+                return defaultGalleryItems;
+            }
+        }
+        
+        // Fungsi untuk mengubah file gambar ke Base64
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                // Validasi ukuran file (max 2MB)
+                const maxSize = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSize) {
+                    reject('Ukuran file terlalu besar. Maksimal 2MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve(e.target.result);
+                };
+                reader.onerror = function(error) {
+                    reject('Error membaca file: ' + error);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // ============================================
+        // VARIABEL UTAMA ADMIN
+        // ============================================
+        
+        let galleries = getGalleryData();
+        let isEditMode = false;
+        let currentEditId = null;
+        let currentFilterCategory = 'all';
+        let currentSearchTerm = '';
+        let selectedImageBase64 = null;
+        
+        // ============================================
+        // FUNGSI UTAMA ADMIN
+        // ============================================
+        
+        function getCategoryLabel(category) {
+            const labels = {
+                'instalasi': 'Instalasi Jaringan',
+                'kegiatan': 'Kegiatan Perusahaan',
+                'teknologi': 'Perangkat Teknologi',
+                'tim': 'Tim Kami',
+                'pelanggan': 'Kepuasan Pelanggan'
+            };
+            return labels[category] || category;
+        }
+        
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 500);
+            }, 5000);
+        }
+        
+        function showAutoSaveIndicator() {
+            const indicator = document.getElementById('autoSaveIndicator');
+            indicator.style.display = 'flex';
+            
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 2000);
+        }
+        
+        function updateStatistics() {
+            document.getElementById('totalGallery').textContent = galleries.length;
+            document.getElementById('totalInstalasi').textContent = galleries.filter(g => g.category === 'instalasi').length;
+            document.getElementById('totalTim').textContent = galleries.filter(g => g.category === 'tim').length;
+        }
+        
+        function renderTable() {
+            const tableBody = document.getElementById('galleryTableBody');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter data
+            let filteredGalleries = galleries.filter(gallery => {
+                const matchesCategory = currentFilterCategory === 'all' || gallery.category === currentFilterCategory;
+                const matchesSearch = currentSearchTerm === '' || 
+                    gallery.title.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    gallery.description.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    getCategoryLabel(gallery.category).toLowerCase().includes(currentSearchTerm.toLowerCase());
+                
+                return matchesCategory && matchesSearch;
+            });
+            
+            // Tampilkan empty state jika tidak ada data
+            if (filteredGalleries.length === 0) {
+                tableBody.innerHTML = '';
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                tableBody.innerHTML = '';
+                
+                filteredGalleries.forEach(gallery => {
+                    const row = document.createElement('tr');
+                    
+                    row.innerHTML = `
+                        <td>
+                            <img src="${gallery.image}" alt="${gallery.title}" class="gallery-preview">
+                        </td>
+                        <td>
+                            <strong style="display: block; margin-bottom: 5px;">${gallery.title}</strong>
+                            <small style="color: #666; font-size: 0.9rem;">ID: ${gallery.id}</small>
+                        </td>
+                        <td><span class="category-badge ${gallery.category}">${getCategoryLabel(gallery.category)}</span></td>
+                        <td><small style="color: #555;">${gallery.description}</small></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="editGallery(${gallery.id})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-delete" onclick="showDeleteModal(${gallery.id}, '${gallery.title.replace(/'/g, "\\'")}')">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            updateStatistics();
+        }
+        
+        // ============================================
+        // FUNGSI MODAL DAN UPLOAD
+        // ============================================
+        
+        function openGalleryModal(gallery = null) {
+            const modal = document.getElementById('galleryModal');
+            const title = document.getElementById('modalTitle');
+            const form = document.getElementById('galleryForm');
+            
+            // Reset form dan gambar
+            form.reset();
+            selectedImageBase64 = null;
+            document.getElementById('imagePreview').style.display = 'none';
+            
+            if (gallery) {
+                // Mode edit
+                isEditMode = true;
+                currentEditId = gallery.id;
+                title.textContent = 'Edit Galeri';
+                
+                document.getElementById('galleryId').value = gallery.id;
+                document.getElementById('galleryTitle').value = gallery.title;
+                document.getElementById('galleryCategory').value = gallery.category;
+                document.getElementById('galleryDescription').value = gallery.description;
+                
+                // Preview gambar yang sudah ada
+                const preview = document.getElementById('imagePreview');
+                preview.src = gallery.image;
+                preview.style.display = 'block';
+                selectedImageBase64 = gallery.image;
+            } else {
+                // Mode tambah
+                isEditMode = false;
+                currentEditId = null;
+                title.textContent = 'Tambah Galeri Baru';
+            }
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeGalleryModal() {
+            document.getElementById('galleryModal').style.display = 'none';
+            document.getElementById('deleteModal').style.display = 'none';
+            document.getElementById('galleryForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            selectedImageBase64 = null;
+            isEditMode = false;
+            currentEditId = null;
+            document.body.style.overflow = 'auto';
+        }
+        
+        function editGallery(id) {
+            const gallery = galleries.find(g => g.id === id);
+            if (gallery) {
+                openGalleryModal(gallery);
+            }
+        }
+        
+        function showDeleteModal(id, title) {
+            document.getElementById('deleteGalleryId').value = id;
+            document.getElementById('deleteGalleryTitle').textContent = title;
+            document.getElementById('deleteModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function deleteGallery(id) {
+            const index = galleries.findIndex(g => g.id === id);
+            if (index !== -1) {
+                galleries.splice(index, 1);
+                saveGalleryData(galleries);
+                renderTable();
+                showAlert('Galeri berhasil dihapus!', 'success');
+                showAutoSaveIndicator();
+            }
+            closeGalleryModal();
+        }
+        
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi
+            renderTable();
+            
+            // Event untuk tombol tambah
+            document.getElementById('addGalleryBtn').addEventListener('click', () => openGalleryModal());
+            
+            // Event untuk modal
+            document.getElementById('modalClose').addEventListener('click', closeGalleryModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeGalleryModal);
+            document.getElementById('deleteModalClose').addEventListener('click', closeGalleryModal);
+            document.getElementById('cancelDeleteBtn').addEventListener('click', closeGalleryModal);
+            
+            // Event untuk konfirmasi hapus
+            document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+                const id = parseInt(document.getElementById('deleteGalleryId').value);
+                deleteGallery(id);
+            });
+            
+            // Event untuk upload gambar
+            const uploadContainer = document.getElementById('imageUploadContainer');
+            const fileInput = document.getElementById('galleryImageFile');
+            
+            // Klik pada container
+            uploadContainer.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // File dipilih
+            fileInput.addEventListener('change', async function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                try {
+                    // Tampilkan loading
+                    uploadContainer.innerHTML = '<i class="fas fa-spinner fa-spin upload-icon"></i><div class="upload-text">Memproses gambar...</div>';
+                    
+                    // Konversi ke Base64
+                    const base64 = await convertImageToBase64(file);
+                    selectedImageBase64 = base64;
+                    
+                    // Tampilkan preview
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = base64;
+                    preview.style.display = 'block';
+                    
+                    // Reset container
+                    uploadContainer.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Klik untuk upload gambar atau drag & drop</div>
+                        <div class="upload-note">Format: JPG, PNG, GIF (Maks: 2MB)</div>
+                    `;
+                    
+                } catch (error) {
+                    showAlert(error, 'error');
+                    fileInput.value = '';
+                    uploadContainer.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Klik untuk upload gambar atau drag & drop</div>
+                        <div class="upload-note">Format: JPG, PNG, GIF (Maks: 2MB)</div>
+                    `;
+                }
+            });
+            
+            // Drag and drop
+            uploadContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadContainer.classList.add('drag-over');
+            });
+            
+            uploadContainer.addEventListener('dragleave', () => {
+                uploadContainer.classList.remove('drag-over');
+            });
+            
+            uploadContainer.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                uploadContainer.classList.remove('drag-over');
+                
+                const file = e.dataTransfer.files[0];
+                if (!file) return;
+                
+                if (!file.type.match('image.*')) {
+                    showAlert('Hanya file gambar yang diizinkan', 'error');
+                    return;
+                }
+                
+                fileInput.files = e.dataTransfer.files;
+                
+                try {
+                    // Tampilkan loading
+                    uploadContainer.innerHTML = '<i class="fas fa-spinner fa-spin upload-icon"></i><div class="upload-text">Memproses gambar...</div>';
+                    
+                    // Konversi ke Base64
+                    const base64 = await convertImageToBase64(file);
+                    selectedImageBase64 = base64;
+                    
+                    // Tampilkan preview
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = base64;
+                    preview.style.display = 'block';
+                    
+                    // Reset container
+                    uploadContainer.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Klik untuk upload gambar atau drag & drop</div>
+                        <div class="upload-note">Format: JPG, PNG, GIF (Maks: 2MB)</div>
+                    `;
+                    
+                } catch (error) {
+                    showAlert(error, 'error');
+                    uploadContainer.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Klik untuk upload gambar atau drag & drop</div>
+                        <div class="upload-note">Format: JPG, PNG, GIF (Maks: 2MB)</div>
+                    `;
+                }
+            });
+            
+            // Event untuk search dan filter
+            document.getElementById('searchInput').addEventListener('input', function() {
+                currentSearchTerm = this.value.trim();
+                renderTable();
+            });
+            
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                currentFilterCategory = this.value;
+                renderTable();
+            });
+            
+            // Event untuk submit form
+            document.getElementById('galleryForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const id = document.getElementById('galleryId').value;
+                const title = document.getElementById('galleryTitle').value.trim();
+                const category = document.getElementById('galleryCategory').value;
+                const description = document.getElementById('galleryDescription').value.trim();
+                
+                // Validasi
+                if (!title || !category || !description) {
+                    showAlert('Harap isi semua field yang wajib diisi!', 'error');
+                    return;
+                }
+                
+                if (!selectedImageBase64 && !isEditMode) {
+                    showAlert('Harap upload gambar!', 'error');
+                    return;
+                }
+                
+                // Jika mode edit dan tidak ada gambar baru, gunakan gambar lama
+                const imageToUse = selectedImageBase64 || 
+                    (isEditMode ? galleries.find(g => g.id === currentEditId)?.image : null);
+                
+                if (!imageToUse) {
+                    showAlert('Gambar tidak ditemukan!', 'error');
+                    return;
+                }
+                
+                if (isEditMode && currentEditId) {
+                    // Update existing
+                    const index = galleries.findIndex(g => g.id === currentEditId);
+                    if (index !== -1) {
+                        galleries[index] = {
+                            id: currentEditId,
+                            title: title,
+                            description: description,
+                            category: category,
+                            image: imageToUse
+                        };
+                        showAlert('Galeri berhasil diperbarui!', 'success');
+                    }
+                } else {
+                    // Add new
+                    const newId = galleries.length > 0 ? Math.max(...galleries.map(g => g.id)) + 1 : 1;
+                    galleries.push({
+                        id: newId,
+                        title: title,
+                        description: description,
+                        category: category,
+                        image: imageToUse
+                    });
+                    showAlert('Galeri baru berhasil ditambahkan!', 'success');
+                }
+                
+                saveGalleryData(galleries);
+                renderTable();
+                closeGalleryModal();
+                showAutoSaveIndicator();
+            });
+            
+            // Tutup modal saat klik di luar
+            window.addEventListener('click', (e) => {
+                if (e.target === document.getElementById('galleryModal') || 
+                    e.target === document.getElementById('deleteModal')) {
+                    closeGalleryModal();
+                }
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeGalleryModal();
+                }
+                
+                // Ctrl+N untuk tambah baru
+                if (e.ctrlKey && e.key === 'n') {
+                    e.preventDefault();
+                    openGalleryModal();
+                }
+                
+                // Ctrl+F untuk fokus search
+                if (e.ctrlKey && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
+            
+            // Export data untuk backup
+            window.exportGalleryData = function() {
+                const data = getGalleryData();
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'gallery-backup.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+            
+            // Import data dari backup
+            window.importGalleryData = function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = function(e) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importedData = JSON.parse(e.target.result);
+                            if (Array.isArray(importedData)) {
+                                // Validasi data
+                                const validData = importedData.filter(item => 
+                                    item.id && item.title && item.image && item.category
+                                );
+                                
+                                if (validData.length > 0) {
+                                    galleries = validData;
+                                    saveGalleryData(galleries);
+                                    renderTable();
+                                    showAlert(`Berhasil mengimpor ${validData.length} data galeri`, 'success');
+                                } else {
+                                    showAlert('Format data tidak valid', 'error');
+                                }
+                            } else {
+                                showAlert('Format file tidak valid', 'error');
+                            }
+                        } catch (error) {
+                            showAlert('Error membaca file: ' + error, 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            };
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim Kami - PT. CANTIKA DATA PRIMA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional Styles for Team Page */
+        .team-header {
+            background: linear-gradient(rgba(44, 90, 160, 0.85), rgba(44, 90, 160, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 0;
+            text-align: center;  
+            margin-bottom: 40px;
+        }
+        
+        .team-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .team-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .team-section {
+            padding: 40px 0 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: #2c5aa0;
+            display: inline-block;
+            padding-bottom: 15px;
+            position: relative;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #2c5aa0;
+            border-radius: 2px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .team-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .team-img-container {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+        }
+        
+        .team-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-card:hover .team-img {
+            transform: scale(1.05);
+        }
+        
+        .team-info {
+            padding: 25px 20px 30px;
+        }
+        
+        .team-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c5aa0;
+            margin-bottom: 8px;
+        }
+        
+        .team-position {
+            color: #ff6b35;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .team-department {
+            display: inline-block;
+            background-color: #f0f7ff;
+            color: #2c5aa0;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        /* Dropdown styling */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            width: 220px;
+            border: 1px solid #eaeaea;
+            border-radius: 0 0 6px 6px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: 0.25s ease;
+            z-index: 100;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li {
+            list-style: none;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            color: #333;
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+        
+        .dropdown-menu a:hover {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .dropdown-icon {
+            margin-left: 6px;
+            font-size: 0.7rem;
+            transition: 0.3s ease;
+        }
+        
+        .dropdown:hover .dropdown-icon {
+            transform: rotate(180deg);
+            color: #2c5aa0;
+        }
+        
+        @media (max-width: 768px) {
+            .team-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .team-header p {
+                font-size: 1rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 30px;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .team-img-container {
+                height: 250px;
+            }
+            
+            .dropdown-menu {
+                position: relative;
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                padding-left: 15px;
+            }
+        }
+        
+        /* Fixed dropdown gap solution */
+        #navMenu > li.dropdown {
+            position: relative;
+        }
+        
+        #navMenu > li.dropdown .dropdown-menu {
+            position: absolute;
+            top: calc(100% - 2px);
+            left: 0;
+            min-width: 220px;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.12);
+            padding: 4px 0;
+            margin: 0;
+            display: none;
+            z-index: 9999;
+            transform: none;
+            pointer-events: auto;
+        }
+        
+        #navMenu > li.dropdown .dropdown-menu li a {
+            padding: 5px 8px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            display: block;
+        }
+        
+        #navMenu > li.dropdown .dropdown-menu li a:hover {
+            background: #f0f0f0;
+        }
+        
+        #navMenu > li.dropdown.open .dropdown-menu {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 768px) {
+            #navMenu > li.dropdown .dropdown-menu {
+                position: relative;
+                top: 0;
+                box-shadow: none;
+                border: none;
+                display: none;
+                padding-left: 12px;
+            }
+            
+            #navMenu > li.dropdown.open .dropdown-menu {
+                display: block;
+            }
+        }
+        
+        .header-container, header, nav, .container {
+            overflow: visible !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Logo PT. CANTIKA DATA PRIMA">
+                </div>
+            </div>
+            
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-link active">
+                            Tentang Kami
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </a>
+                    
+                        <ul class="dropdown-menu">
+                            <li><a href="sejarah.html">Sejarah Perusahaan</a></li>
+                            <li><a href="galeri.html">Galeri Perusahaan</a></li>
+                            <li><a href="tim.html" class="active">Team Kami</a></li>
+                        </ul>
+                    </li>                
+                    
+                    <li><a href="services.php">Layanan</a></li>
+                    <li><a href="coverage.html">Coverage Area</a></li>
+                    <li><a href="contact.php">Kontak Kami</a></li>
+                    <li><a href="register.html" class="register-btn">Daftar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="team-header">
+        <div class="container">
+            <h1>Tim Kami</h1>
+            <p>Profesional berpengalaman yang menjalankan operasional PT. CANTIKA DATA PRIMA</p>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Anggota Tim</h2>
+            </div>
+            
+            <div class="team-grid" id="teamGrid">
+                <!-- Data tim akan diisi otomatis dari JavaScript -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i class="fas fa-users"></i>
+                    <h3>Belum ada data tim</h3>
+                    <p>Silahkan tambahkan data tim melalui halaman admin</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="notification" id="updateNotification">
+        <i class="fas fa-sync-alt"></i>
+        <span>Data tim telah diperbarui</span>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <img src="images/logo.png" alt="Logo PT. CANTIKA DATA PRIMA">
+                    </div>
+                    <p>Penyedia layanan internet dan solusi IT terdepan dengan teknologi terkini dan pelayanan terbaik di wilayah Karanganyar.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Menu</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="services.html">Produk & Layanan</a></li>
+                        <li><a href="tim.html" class="active">Team Kami</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Layanan</h3>
+                    <ul>
+                        <li><a href="services.html#internet">Internet Provider</a></li>
+                        <li><a href="services.html#jaringan">Solusi Jaringan</a></li>
+                        <li><a href="services.html#managed">Managed IT</a></li>
+                        <li><a href="services.html#support">Dukungan Teknis</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Kontak</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Jl. Jogotaan No. 123, Kebakkramat</li>
+                        <li><i class="fas fa-phone"></i> (0351) 1234-5678</li>
+                        <li><i class="fas fa-envelope"></i> info@cantikadataprima.co.id</li>
+                        <li><i class="fas fa-clock"></i> Senin - Minggu: 24/7 Support</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 PT. CANTIKA DATA PRIMA. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="js/main.js"></script>
+    <script>
+        // ============================================
+        // SISTEM DATA TIM - localStorage DENGAN BASE64
+        // ============================================
+        
+        const TEAM_STORAGE_KEY = 'cantika_team_v1';
+        
+        // Data default sesuai dengan gambar yang diberikan
+        const defaultTeamData = [
+            {
+                id: 1,
+                name: "Sari Dewi",
+                position: "Manager Teknik",
+                department: "Teknis & Jaringan",
+                image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                name: "Agus Wijaya",
+                position: "Senior Network Engineer",
+                department: "Teknis & Jaringan",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                name: "Budi Santoso",
+                position: "Direktur Utama",
+                department: "Manajemen",
+                image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+        
+        // Fungsi untuk menyimpan data
+        function saveTeamData(teamItems) {
+            try {
+                const dataToSave = {
+                    items: teamItems,
+                    lastUpdated: new Date().toISOString(),
+                    version: '1.0'
+                };
+                localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(dataToSave));
+                return true;
+            } catch (error) {
+                console.error('Error saving team data:', error);
+                return false;
+            }
+        }
+        
+        // Fungsi untuk mengambil data
+        function getTeamData() {
+            try {
+                const storedData = localStorage.getItem(TEAM_STORAGE_KEY);
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    if (parsed.items && Array.isArray(parsed.items)) {
+                        return parsed.items;
+                    }
+                }
+                // Jika belum ada, buat data default
+                saveTeamData(defaultTeamData);
+                return defaultTeamData;
+            } catch (error) {
+                console.error('Error loading team data:', error);
+                return defaultTeamData;
+            }
+        }
+        
+        // ============================================
+        // FUNGSI UTAMA TIM
+        // ============================================
+        
+        let lastTeamHash = '';
+        let autoUpdateInterval = null;
+        
+        function renderTeam() {
+            const teamGrid = document.getElementById('teamGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Ambil data dari localStorage
+            const teamItems = getTeamData();
+            
+            // Tampilkan empty state jika tidak ada data
+            if (teamItems.length === 0) {
+                teamGrid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            } else {
+                emptyState.style.display = 'none';
+            }
+            
+            // Kosongkan grid
+            teamGrid.innerHTML = '';
+            
+            // Buat card untuk setiap anggota tim
+            teamItems.forEach((member, index) => {
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card';
+                teamCard.setAttribute('data-id', member.id);
+                
+                teamCard.innerHTML = `
+                    <div class="team-img-container">
+                        <img src="${member.image}" alt="${member.name}" class="team-img" loading="lazy">
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">${member.name}</h3>
+                        <div class="team-position">${member.position}</div>
+                        <div class="team-department">${member.department}</div>
+                    </div>
+                `;
+                
+                teamGrid.appendChild(teamCard);
+            });
+            
+            // Simpan hash untuk cek perubahan
+            lastTeamHash = JSON.stringify(teamItems);
+        }
+        
+        // ============================================
+        // FUNGSI AUTO UPDATE
+        // ============================================
+        
+        function checkForTeamUpdates() {
+            const currentTeamData = getTeamData();
+            const currentHash = JSON.stringify(currentTeamData);
+            
+            if (currentHash !== lastTeamHash) {
+                console.log('Data tim diperbarui, merender ulang...');
+                lastTeamHash = currentHash;
+                renderTeam();
+                showUpdateNotification();
+            }
+        }
+        
+        function showUpdateNotification() {
+            const notification = document.getElementById('updateNotification');
+            notification.style.display = 'flex';
+            notification.style.animation = 'slideIn 0.3s ease';
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 300);
+            }, 3000);
+        }
+        
+        function startAutoUpdate() {
+            // Cek update setiap 3 detik
+            autoUpdateInterval = setInterval(checkForTeamUpdates, 3000);
+            
+            // Juga dengar event storage (jika ada tab admin lain)
+            window.addEventListener('storage', function(e) {
+                if (e.key === TEAM_STORAGE_KEY) {
+                    checkForTeamUpdates();
+                }
+            });
+        }
+        
+        function stopAutoUpdate() {
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+            }
+        }
+        
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi tim
+            renderTeam();
+            lastTeamHash = JSON.stringify(getTeamData());
+            
+            // Mulai auto update
+            startAutoUpdate();
+            
+            // Back to top button
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.display = 'flex';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            });
+            
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Hentikan auto update saat tab tidak aktif
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopAutoUpdate();
+                } else {
+                    startAutoUpdate();
+                }
+            });
+            
+            // Dropdown functionality for navigation
+            const DROPDOWN_CLOSE_DELAY = 150;
+            const dropdownItems = document.querySelectorAll('#navMenu > li.dropdown');
+        
+            dropdownItems.forEach(function (item) {
+                let closeTimer = null;
+                const trigger = item.querySelector('a.menu-link') || item.querySelector('a');
+                const menu = item.querySelector('.dropdown-menu');
+        
+                if (!trigger || !menu) return;
+        
+                // Open on mouseenter
+                item.addEventListener('mouseenter', function () {
+                    clearTimeout(closeTimer);
+                    item.classList.add('open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                });
+        
+                // Start close timer on mouseleave
+                item.addEventListener('mouseleave', function () {
+                    clearTimeout(closeTimer);
+                    closeTimer = setTimeout(function () {
+                        item.classList.remove('open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }, DROPDOWN_CLOSE_DELAY);
+                });
+        
+                // Keep open when mouse is inside menu
+                menu.addEventListener('mouseenter', function () {
+                    clearTimeout(closeTimer);
+                    item.classList.add('open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                });
+                
+                menu.addEventListener('mouseleave', function () {
+                    clearTimeout(closeTimer);
+                    closeTimer = setTimeout(function () {
+                        item.classList.remove('open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }, DROPDOWN_CLOSE_DELAY);
+                });
+        
+                // Toggle on touch devices (mobile)
+                trigger.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        const isOpen = item.classList.contains('open');
+                        if (isOpen) {
+                            item.classList.remove('open');
+                            trigger.setAttribute('aria-expanded', 'false');
+                        } else {
+                            // Close other dropdowns
+                            document.querySelectorAll('#navMenu > li.dropdown.open').forEach(function (d) {
+                                d.classList.remove('open');
+                                const t = d.querySelector('a.menu-link') || d.querySelector('a');
+                                t && t.setAttribute('aria-expanded', 'false');
+                            });
+                            item.classList.add('open');
+                            trigger.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+                });
+        
+                // Accessibility: ESC to close
+                document.addEventListener('keyup', function (ev) {
+                    if (ev.key === 'Escape') {
+                        item.classList.remove('open');
+                        trigger.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        
+            // Close all if clicking outside
+            document.addEventListener('click', function (ev) {
+                if (!ev.target.closest('#navMenu')) {
+                    document.querySelectorAll('#navMenu > li.dropdown.open').forEach(function (d) {
+                        d.classList.remove('open');
+                        const t = d.querySelector('a.menu-link') || d.querySelector('a');
+                        t && t.setAttribute('aria-expanded', 'false');
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        /* Dropdown hover/toggle yang andal:
+           - mouseenter -> buka segera
+           - mouseleave -> delay kecil (150ms) sebelum tutup, mencegah flicker
+           - click pada mobile -> toggle
+        */
+        document.addEventListener('DOMContentLoaded', function () {
+          const DROPDOWN_CLOSE_DELAY = 150; // ms
+          const dropdownItems = document.querySelectorAll('#navMenu > li.dropdown');
+        
+          dropdownItems.forEach(function (item) {
+            let closeTimer = null;
+            const trigger = item.querySelector('a.menu-link') || item.querySelector('a');
+            const menu = item.querySelector('.dropdown-menu');
+        
+            if (!trigger || !menu) return;
+        
+            // buka saat mouse masuk area parent
+            item.addEventListener('mouseenter', function () {
+              clearTimeout(closeTimer);
+              item.classList.add('open');
+              trigger.setAttribute('aria-expanded', 'true');
+            });
+        
+            // mulai timer tutup saat mouse keluar parent
+            item.addEventListener('mouseleave', function () {
+              clearTimeout(closeTimer);
+              closeTimer = setTimeout(function () {
+                item.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+              }, DROPDOWN_CLOSE_DELAY);
+            });
+        
+            // juga jaga saat mouse berada di dalam menu (mencegah flicker)
+            menu.addEventListener('mouseenter', function () {
+              clearTimeout(closeTimer);
+              item.classList.add('open');
+              trigger.setAttribute('aria-expanded', 'true');
+            });
+            menu.addEventListener('mouseleave', function () {
+              clearTimeout(closeTimer);
+              closeTimer = setTimeout(function () {
+                item.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+              }, DROPDOWN_CLOSE_DELAY);
+            });
+        
+            // toggle di perangkat sentuh / mobile (klik)
+            trigger.addEventListener('click', function (e) {
+              if (window.innerWidth <= 768) {
+                e.preventDefault();
+                // toggle open class
+                const isOpen = item.classList.contains('open');
+                if (isOpen) {
+                  item.classList.remove('open');
+                  trigger.setAttribute('aria-expanded', 'false');
+                } else {
+                  // close other dropdowns
+                  document.querySelectorAll('#navMenu > li.dropdown.open').forEach(function (d) {
+                    d.classList.remove('open');
+                    const t = d.querySelector('a.menu-link') || d.querySelector('a');
+                    t && t.setAttribute('aria-expanded', 'false');
+                  });
+                  item.classList.add('open');
+                  trigger.setAttribute('aria-expanded', 'true');
+                }
+              }
+            });
+        
+            // aksesibilitas: ESC untuk tutup
+            document.addEventListener('keyup', function (ev) {
+              if (ev.key === 'Escape') {
+                item.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+              }
+            });
+          });
+        
+          // Tutup semua jika klik di luar
+          document.addEventListener('click', function (ev) {
+            if (!ev.target.closest('#navMenu')) {
+              document.querySelectorAll('#navMenu > li.dropdown.open').forEach(function (d) {
+                d.classList.remove('open');
+                const t = d.querySelector('a.menu-link') || d.querySelector('a');
+                t && t.setAttribute('aria-expanded', 'false');
+              });
+            }
+          });
+        });
+        
+        // Tutup modal saat klik di luar modal
+        window.onclick = function(event) {
+            const modal = document.getElementById('successModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        </script>  
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - WiFiNet Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body class="admin-dashboard">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <i class="fas fa-wifi logo-icon"></i>
+            <h2>WiFi<span>Net</span> Admin</h2>
+        </div>
+        
+        <div class="admin-menu">
+            <ul>
+                <li><a href="admin-dashboard.html" ><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li><a href="pelanggan.php"><i class="fas fa-users"></i> <span>Pelanggan</span></a></li>
+                <li><a href="laporan-gangguan.html"><i class="fas fa-exclamation-triangle"></i> <span>Laporan Gangguan</span></a></li>
+                <li><a href="tagihan.html"><i class="fas fa-file-invoice-dollar"></i> <span>Tagihan & Pembayaran</span></a></li>
+                <li><a href="paket.html"><i class="fas fa-network-wired"></i> <span>Paket Internet</span></a></li>
+                <li><a href="laporan.html" class="active"><i class="fas fa-chart-bar"></i> <span>Laporan</span></a></li>
+                <li><a href="pengaturan.html"><i class="fas fa-cog"></i> <span>Pengaturan</span></a></li>
+            </ul>
+        </div>
+        
+        <div class="admin-logout">
+            <a href="index.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="admin-main">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>Dashboard Admin</h1>
+            <div class="admin-user">
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Admin WiFiNet</div>
+                    <div class="admin-user-role">Administrator</div>
+                </div>
+                <div class="admin-avatar">A</div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="admin-content">
+        
+            
+            <!-- Form Laporan -->
+            <div class="admin-table-container">
+                <h2>Buat Laporan</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reportType">Jenis Laporan</label>
+                        <select id="reportType">
+                            <option value="daily">Harian</option>
+                            <option value="weekly">Mingguan</option>
+                            <option value="monthly">Bulanan</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dateRange">Periode</label>
+                        <select id="dateRange">
+                            <option value="today">Hari Ini</option>
+                            <option value="week">Minggu Ini</option>
+                            <option value="month">Bulan Ini</option>
+                            <option value="lastmonth">Bulan Lalu</option>
+                            <option value="custom">Custom Date</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button id="generateReportBtn" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Generate Laporan</button>
+                    <button id="exportReportBtn" class="btn btn-secondary"><i class="fas fa-download"></i> Export ke Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
